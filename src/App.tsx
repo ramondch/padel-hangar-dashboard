@@ -24,9 +24,29 @@ const PERIODS: { key: Period; label: string }[] = [
 
 const SLOT_LABELS = ['09h','11h','13h','16h','18h','20h','22h'];
 
+function LogoPH() {
+  return (
+    <svg width="164" height="48" viewBox="0 0 164 48" aria-label="Padel Hangar" role="img" style={{ flexShrink: 0 }}>
+      {/* Semicírculo amarillo — elemento visual del logo */}
+      <path d="M0 48 L0 24 A24 24 0 0 1 48 24 L48 48 Z" fill="#FFD400"/>
+      <circle cx="24" cy="24" r="11" fill="#020D1F"/>
+      <circle cx="24" cy="24" r="5"  fill="#FFD400" opacity=".6"/>
+      {/* Texto */}
+      <text x="58" y="21" fill="#E8F2FF" fontSize="20" fontWeight="700"
+        fontFamily="'Barlow Condensed',system-ui,sans-serif" letterSpacing="1.5">
+        PADEL
+      </text>
+      <text x="58" y="42" fill="#FFD400" fontSize="20" fontWeight="700"
+        fontFamily="'Barlow Condensed',system-ui,sans-serif" letterSpacing="1.5">
+        HANGAR
+      </text>
+    </svg>
+  );
+}
+
 export default function App() {
-  const [dataset, setDataset]         = useState<Dataset | null>(null);
-  const [period, setPeriod]           = useState<Period>('mes');
+  const [dataset, setDataset]             = useState<Dataset | null>(null);
+  const [period, setPeriod]               = useState<Period>('mes');
   const [selectedCourt, setSelectedCourt] = useState<string | null>(null);
   const [selectedCanal, setSelectedCanal] = useState<string | null>(null);
   const [selectedPago, setSelectedPago]   = useState<string | null>(null);
@@ -41,7 +61,8 @@ export default function App() {
     [dataset, period],
   );
 
-  const hasFilters = selectedCourt !== null || selectedCanal !== null || selectedPago !== null || selectedSlot !== null;
+  const hasFilters = selectedCourt !== null || selectedCanal !== null
+    || selectedPago !== null || selectedSlot !== null;
 
   function clearAll() {
     setSelectedCourt(null);
@@ -75,11 +96,7 @@ export default function App() {
     <div className="wrap">
       {/* ── Cabecera ── */}
       <div className="top">
-        <img
-          src="https://padelhangar.es/wp-content/uploads/2022/08/padle-hangar-españa-logotipo.png"
-          alt="Padel Hangar"
-          className="logo-img"
-        />
+        <LogoPH />
         <div>
           <div className="h1">Padel <b>Hangar</b> · Cuadro de mandos</div>
           <div className="sub">
@@ -161,7 +178,8 @@ export default function App() {
 
         <ChartCard
           title="Rendimiento de pistas"
-          subtitle={selectedCourt ? `Pista seleccionada: ${selectedCourt} — haz clic para deseleccionar` : 'Haz clic en una barra para filtrar'}
+          subtitle={selectedCourt ? `Seleccionada: ${selectedCourt}` : undefined}
+          interactive
           legend={[
             { color: 'var(--yellow)', label: 'Indoor' },
             { color: 'var(--blue)',   label: 'Outdoor' },
@@ -176,7 +194,8 @@ export default function App() {
 
         <ChartCard
           title="Ocupación por franja"
-          subtitle={selectedSlot !== null ? `Franja ${SLOT_LABELS[selectedSlot]} seleccionada · haz clic en la etiqueta para deseleccionar` : 'Haz clic en una franja horaria para filtrar'}
+          subtitle={selectedSlot !== null ? `Franja activa: ${SLOT_LABELS[selectedSlot]}` : undefined}
+          interactive
         >
           <Heatmap
             data={heat}
@@ -203,7 +222,8 @@ export default function App() {
 
         <ChartCard
           title="Origen de las reservas"
-          subtitle={selectedCanal ? `Canal: ${selectedCanal} · haz clic para deseleccionar` : 'Haz clic en un canal para filtrar'}
+          subtitle={selectedCanal ? `Seleccionado: ${selectedCanal}` : undefined}
+          interactive
         >
           <Donut
             data={canales}
@@ -214,7 +234,8 @@ export default function App() {
 
         <ChartCard
           title="Estado de pagos y renovación"
-          subtitle={selectedPago ? `Estado: ${selectedPago} · haz clic para deseleccionar` : 'Haz clic en un estado para filtrar'}
+          subtitle={selectedPago ? `Seleccionado: ${selectedPago}` : undefined}
+          interactive
           note="El bot persigue automáticamente el cobro pendiente; tras el plazo de gracia libera la plaza a lista de espera."
         >
           <Donut
@@ -239,7 +260,7 @@ export default function App() {
 
       {/* ── Pie ── */}
       <div className="foot">
-        Padel Hangar · Cuadro de mandos (demo) — datos simulados con fines de demostración · 8 pistas indoor + 3 outdoor
+        Padel Hangar · Cuadro de mandos (demo) — datos simulados · 8 pistas indoor + 3 outdoor
       </div>
     </div>
   );

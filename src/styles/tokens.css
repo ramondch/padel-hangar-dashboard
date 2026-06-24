@@ -1,12 +1,12 @@
 /* ── Design tokens — Padel Hangar · Pista ────────────────────────────────── */
 :root {
   /* Paleta base — azul pista de pádel */
-  --ink:    #040E1C;
-  --panel:  #071833;
-  --panel2: #0A2245;
-  --line:   #173869;
-  --off:    #EBF2FF;
-  --mut:    #5C7FA3;
+  --ink:    #020D1F;
+  --panel:  #071F42;
+  --panel2: #0A2D5E;
+  --line:   #1E5FAA;
+  --off:    #E8F2FF;
+  --mut:    #6090BE;
 
   /* Acento principal — pelota de pádel */
   --yellow: #FFD400;
