@@ -1,0 +1,26 @@
+[
+  {
+    "id": "B001",
+    "socioId": "S001",
+    "pistaId": "P03",
+    "diaSemana": 1,
+    "hora": 20,
+    "periodo": "trimestral",
+    "vence": "2026-09-30",
+    "estadoPago": "pagado",
+    "importe": 476,
+    "renovado": true
+  },
+  {
+    "id": "B002",
+    "socioId": "S002",
+    "pistaId": "P01",
+    "diaSemana": 3,
+    "hora": 18,
+    "periodo": "anual",
+    "vence": "2026-12-31",
+    "estadoPago": "pagado",
+    "importe": 1632,
+    "renovado": true
+  }
+]

@@ -1,0 +1,29 @@
+/* ── Design tokens — Padel Hangar ────────────────────────────────────────── */
+:root {
+  /* Paleta base */
+  --ink:    #0c0c0e;
+  --panel:  #15161a;
+  --panel2: #1b1c21;
+  --line:   #2b2c32;
+  --off:    #F4F4F0;
+  --mut:    #8b8c93;
+
+  /* Acento principal */
+  --yellow: #FFD400;
+
+  /* Series */
+  --green:  #34d399;
+  --red:    #fb7185;
+  --blue:   #38bdf8;
+  --purple: #a78bfa;
+  --orange: #fb923c;
+  --teal:   #2dd4bf;
+
+  /* Tipografía */
+  --font-display: 'Barlow Condensed', system-ui, sans-serif;
+  --font-body:    'Inter', system-ui, sans-serif;
+
+  /* Radio y bordes */
+  --radius: 14px;
+  --border: 1px solid var(--line);
+}

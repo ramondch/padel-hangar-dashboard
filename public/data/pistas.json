@@ -1,0 +1,13 @@
+[
+  { "id": "P01", "nombre": "Indoor 1",  "tipo": "indoor"  },
+  { "id": "P02", "nombre": "Indoor 2",  "tipo": "indoor"  },
+  { "id": "P03", "nombre": "Indoor 3",  "tipo": "indoor"  },
+  { "id": "P04", "nombre": "Indoor 4",  "tipo": "indoor"  },
+  { "id": "P05", "nombre": "Indoor 5",  "tipo": "indoor"  },
+  { "id": "P06", "nombre": "Indoor 6",  "tipo": "indoor"  },
+  { "id": "P07", "nombre": "Indoor 7",  "tipo": "indoor"  },
+  { "id": "P08", "nombre": "Indoor 8",  "tipo": "indoor"  },
+  { "id": "P09", "nombre": "Outdoor 1", "tipo": "outdoor" },
+  { "id": "P10", "nombre": "Outdoor 2", "tipo": "outdoor" },
+  { "id": "P11", "nombre": "Outdoor 3", "tipo": "outdoor" }
+]

@@ -1,0 +1,48 @@
+[
+  {
+    "id": "R000001",
+    "pistaId": "P01",
+    "fecha": "2026-06-01",
+    "horaInicio": 18,
+    "duracionMin": 90,
+    "tipo": "fija",
+    "canal": "telegram",
+    "tramo": "punta",
+    "importe": 34.00,
+    "importeLuz": 3.0,
+    "estadoPago": "pagado",
+    "socioId": "S001",
+    "noShow": false
+  },
+  {
+    "id": "R000002",
+    "pistaId": "P02",
+    "fecha": "2026-06-01",
+    "horaInicio": 20,
+    "duracionMin": 90,
+    "tipo": "suelta",
+    "canal": "playtomic",
+    "tramo": "punta",
+    "importe": 36.50,
+    "importeLuz": 4.5,
+    "estadoPago": "pagado",
+    "socioId": "S012",
+    "noShow": false
+  },
+  {
+    "id": "R000003",
+    "pistaId": "P05",
+    "fecha": "2026-06-02",
+    "horaInicio": 9,
+    "duracionMin": 90,
+    "tipo": "escuela",
+    "canal": "recepcion",
+    "tramo": "valle",
+    "importe": 20.00,
+    "importeLuz": 1.5,
+    "estadoPago": "pendiente",
+    "socioId": "S043",
+    "profesorId": "PR02",
+    "noShow": false
+  }
+]

@@ -1,0 +1,12 @@
+[
+  { "mes": "2026-06", "categoria": "personal",      "importe": 8750 },
+  { "mes": "2026-06", "categoria": "suministros",   "importe": 3420 },
+  { "mes": "2026-06", "categoria": "alquiler",      "importe": 6500 },
+  { "mes": "2026-06", "categoria": "mantenimiento", "importe": 980  },
+  { "mes": "2026-06", "categoria": "marketing",     "importe": 450  },
+  { "mes": "2026-05", "categoria": "personal",      "importe": 8600 },
+  { "mes": "2026-05", "categoria": "suministros",   "importe": 3100 },
+  { "mes": "2026-05", "categoria": "alquiler",      "importe": 6500 },
+  { "mes": "2026-05", "categoria": "mantenimiento", "importe": 720  },
+  { "mes": "2026-05", "categoria": "marketing",     "importe": 380  }
+]

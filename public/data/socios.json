@@ -1,0 +1,7 @@
+[
+  { "id": "S001", "nombre": "Ana García",    "altaFecha": "2024-01-15", "estado": "al_dia"    },
+  { "id": "S002", "nombre": "Luis López",    "altaFecha": "2024-02-20", "estado": "al_dia"    },
+  { "id": "S003", "nombre": "María Martínez","altaFecha": "2024-03-10", "estado": "pendiente" },
+  { "id": "S004", "nombre": "Carlos Sánchez","altaFecha": "2025-01-05", "estado": "al_dia"    },
+  { "id": "S005", "nombre": "Laura Fernández","altaFecha": "2025-06-12","estado": "lista_espera"}
+]
