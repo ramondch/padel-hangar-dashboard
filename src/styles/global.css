@@ -5,8 +5,9 @@ body {
   font-family: var(--font-body);
   color: var(--off);
   background:
-    radial-gradient(1100px 600px at 90% -15%, rgba(255,212,0,.06), transparent 60%),
-    repeating-linear-gradient(45deg, #0b0b0d 0 24px, #0c0c0f 24px 48px);
+    radial-gradient(ellipse 1200px 500px at 50% -5%, rgba(14,74,148,.30), transparent 65%),
+    radial-gradient(ellipse 600px 400px at 0% 100%, rgba(56,189,248,.06), transparent 60%),
+    #040E1C;
   min-height: 100vh;
 }
 
@@ -28,16 +29,12 @@ svg text { font-family: var(--font-body); }
   margin-bottom: 6px;
 }
 
-.logo {
+.logo-img {
+  height: 48px;
+  width: auto;
+  max-width: 180px;
+  object-fit: contain;
   flex-shrink: 0;
-  width: 46px;
-  height: 46px;
-  border-radius: 12px;
-  background: var(--yellow);
-  display: grid;
-  place-items: center;
-  font-size: 24px;
-  box-shadow: 0 0 0 3px rgba(255,212,0,.15);
 }
 
 .h1 {
@@ -61,7 +58,7 @@ svg text { font-family: var(--font-body); }
   height: 7px;
   border-radius: 4px;
   margin: 16px 0 18px;
-  background: repeating-linear-gradient(45deg, var(--yellow) 0 16px, #0c0c0e 16px 32px);
+  background: repeating-linear-gradient(45deg, var(--yellow) 0 16px, var(--line) 16px 32px);
   opacity: .85;
 }
 
@@ -70,8 +67,8 @@ svg text { font-family: var(--font-body); }
   display: flex;
   gap: 6px;
   margin-left: auto;
-  background: #101113;
-  border: 1px solid var(--line);
+  background: var(--panel2);
+  border: var(--border);
   border-radius: 11px;
   padding: 4px;
 }
@@ -93,10 +90,80 @@ svg text { font-family: var(--font-body); }
   background: var(--yellow);
   color: #1a1500;
 }
+.seg button:hover:not(.on) {
+  background: rgba(255,212,0,.08);
+  color: var(--off);
+}
 .seg button:focus-visible {
   outline: 2px solid var(--yellow);
   outline-offset: 2px;
 }
+
+/* ── Barra de filtros activos ────────────────────────────────────────────── */
+.filter-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-bottom: 14px;
+  padding: 10px 14px;
+  background: rgba(23,56,105,.35);
+  border: var(--border);
+  border-radius: var(--radius);
+  animation: fadeIn .2s ease;
+}
+.filter-bar .filter-label {
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: .9px;
+  color: var(--mut);
+  font-family: var(--font-display);
+  margin-right: 2px;
+}
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: rgba(255,212,0,.12);
+  border: 1px solid rgba(255,212,0,.3);
+  color: var(--yellow);
+  border-radius: 999px;
+  padding: 4px 10px 4px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  font-family: var(--font-display);
+  text-transform: uppercase;
+  letter-spacing: .5px;
+}
+.chip button {
+  border: none;
+  background: none;
+  color: var(--yellow);
+  cursor: pointer;
+  font-size: 15px;
+  line-height: 1;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  opacity: .7;
+  transition: opacity .15s;
+}
+.chip button:hover { opacity: 1; }
+.btn-clear {
+  margin-left: auto;
+  border: none;
+  background: none;
+  color: var(--mut);
+  font-size: 11.5px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-family: var(--font-body);
+  transition: color .15s;
+}
+.btn-clear:hover { color: var(--off); }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
 /* ── Grid de KPIs ────────────────────────────────────────────────────────── */
 .kpis {
@@ -226,17 +293,25 @@ svg text { font-family: var(--font-body); }
   color: var(--mut);
   display: flex;
   align-items: center;
+  cursor: pointer;
+  transition: color .15s;
+  padding: 0 4px 0 0;
+  border-radius: 4px;
 }
+.heat .rl:hover { color: var(--off); }
+.heat .rl.active { color: var(--yellow); font-weight: 700; }
 .heat .cell {
   height: 26px;
   border-radius: 5px;
   display: grid;
   place-items: center;
   font-size: 10px;
-  color: #0c0c0e;
+  color: #040E1C;
   font-weight: 700;
-  cursor: default;
+  transition: opacity .2s;
 }
+.heat .cell.dimmed { opacity: .25; }
+.heat .cell.highlighted { outline: 2px solid rgba(255,212,0,.5); outline-offset: 1px; }
 
 /* ── Barras de progreso (profesores / tramos) ────────────────────────────── */
 .blist { margin: 4px 0 6px; }
@@ -251,10 +326,10 @@ svg text { font-family: var(--font-body); }
 .brow .bt .vv { color: var(--mut); }
 .track {
   height: 9px;
-  background: #0c0c0e;
+  background: var(--ink);
   border-radius: 6px;
   overflow: hidden;
-  border: 1px solid var(--line);
+  border: var(--border);
 }
 .fill {
   height: 100%;
@@ -276,14 +351,18 @@ svg text { font-family: var(--font-body); }
   justify-content: space-between;
   font-size: 12.5px;
   padding: 5px 0;
-  border-bottom: 1px dashed #24252b;
+  border-bottom: 1px dashed var(--line);
+  cursor: pointer;
+  transition: opacity .15s;
+  border-radius: 4px;
 }
 .dl:last-child { border: none; }
+.dl:hover { opacity: .85; }
 .dl .nm {
   display: flex;
   align-items: center;
   gap: 8px;
-  color: #cfd0d6;
+  color: var(--off);
 }
 .dl .nm i { width: 10px; height: 10px; border-radius: 3px; flex-shrink: 0; }
 .dl .vv {

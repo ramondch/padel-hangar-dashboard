@@ -13,7 +13,7 @@ import TramoList    from './components/charts/TramoList';
 import Donut        from './components/charts/Donut';
 import ComboChart   from './components/charts/ComboChart';
 
-const fmt = (n: number) => Math.round(n).toLocaleString('es-ES');
+const fmt  = (n: number) => Math.round(n).toLocaleString('es-ES');
 const fmt1 = (n: number) => n.toLocaleString('es-ES', { minimumFractionDigits: 1, maximumFractionDigits: 1 });
 
 const PERIODS: { key: Period; label: string }[] = [
@@ -22,9 +22,15 @@ const PERIODS: { key: Period; label: string }[] = [
   { key: 'ano',       label: 'Año' },
 ];
 
+const SLOT_LABELS = ['09h','11h','13h','16h','18h','20h','22h'];
+
 export default function App() {
-  const [dataset, setDataset]   = useState<Dataset | null>(null);
-  const [period, setPeriod]     = useState<Period>('mes');
+  const [dataset, setDataset]         = useState<Dataset | null>(null);
+  const [period, setPeriod]           = useState<Period>('mes');
+  const [selectedCourt, setSelectedCourt] = useState<string | null>(null);
+  const [selectedCanal, setSelectedCanal] = useState<string | null>(null);
+  const [selectedPago, setSelectedPago]   = useState<string | null>(null);
+  const [selectedSlot, setSelectedSlot]   = useState<number | null>(null);
 
   useEffect(() => {
     dataProvider.getDataset().then(setDataset);
@@ -34,6 +40,15 @@ export default function App() {
     () => dataset ? computeDashboard(dataset, period) : null,
     [dataset, period],
   );
+
+  const hasFilters = selectedCourt !== null || selectedCanal !== null || selectedPago !== null || selectedSlot !== null;
+
+  function clearAll() {
+    setSelectedCourt(null);
+    setSelectedCanal(null);
+    setSelectedPago(null);
+    setSelectedSlot(null);
+  }
 
   if (!dash) {
     return (
@@ -46,21 +61,25 @@ export default function App() {
   const { kpis, revenue, courts, heat, profesores, tramos, canales, pagos, combo } = dash;
 
   const kpiCards = [
-    { icon: '💶', label: 'Ingresos',           value: fmt(kpis.ingresos),          unit: '€',  change: kpis.ingresosVsPrev,         changeUnit: 'pct' as const },
-    { icon: '📊', label: 'Ocupación media',     value: String(kpis.ocupacion),      unit: '%',  change: kpis.ocupacionVsPrev,        changeUnit: 'pp'  as const },
-    { icon: '🎾', label: 'Ingreso / hora-pista',value: fmt1(kpis.ingresoPorHora),   unit: '€',  change: kpis.ingresoPorHoraVsPrev,   changeUnit: 'pct' as const },
-    { icon: '🔁', label: '% Renovación bonos',  value: String(kpis.renovacionBonos),unit: '%',  change: kpis.renovacionBonosVsPrev,  changeUnit: 'pp'  as const },
-    { icon: '⚠️', label: 'Cobros pendientes',   value: fmt(kpis.cobrosPendientes),  unit: '€',  change: kpis.cobrosPendientesVsPrev, changeUnit: 'pct' as const },
-    { icon: '⏱️', label: 'Tasa de no-show',     value: fmt1(kpis.tasaNoShow),       unit: '%',  change: kpis.tasaNoShowVsPrev,       changeUnit: 'pp'  as const },
-    { icon: '👥', label: 'Nuevos socios',        value: String(kpis.nuevosSocios),   unit: '',   change: kpis.nuevosSociosVsPrev,     changeUnit: 'pct' as const },
-    { icon: '📈', label: 'Bonos / fijas activas',value: String(kpis.bonosActivos),  unit: '',   change: kpis.bonosActivosVsPrev,     changeUnit: 'pct' as const },
+    { icon: '💶', label: 'Ingresos',            value: fmt(kpis.ingresos),           unit: '€',  change: kpis.ingresosVsPrev,         changeUnit: 'pct' as const },
+    { icon: '📊', label: 'Ocupación media',      value: String(kpis.ocupacion),       unit: '%',  change: kpis.ocupacionVsPrev,        changeUnit: 'pp'  as const },
+    { icon: '🎾', label: 'Ingreso / hora-pista', value: fmt1(kpis.ingresoPorHora),    unit: '€',  change: kpis.ingresoPorHoraVsPrev,   changeUnit: 'pct' as const },
+    { icon: '🔁', label: '% Renovación bonos',   value: String(kpis.renovacionBonos), unit: '%',  change: kpis.renovacionBonosVsPrev,  changeUnit: 'pp'  as const },
+    { icon: '⚠️', label: 'Cobros pendientes',    value: fmt(kpis.cobrosPendientes),   unit: '€',  change: kpis.cobrosPendientesVsPrev, changeUnit: 'pct' as const },
+    { icon: '⏱️', label: 'Tasa de no-show',      value: fmt1(kpis.tasaNoShow),        unit: '%',  change: kpis.tasaNoShowVsPrev,       changeUnit: 'pp'  as const },
+    { icon: '👥', label: 'Nuevos socios',         value: String(kpis.nuevosSocios),    unit: '',   change: kpis.nuevosSociosVsPrev,     changeUnit: 'pct' as const },
+    { icon: '📈', label: 'Bonos / fijas activas', value: String(kpis.bonosActivos),   unit: '',   change: kpis.bonosActivosVsPrev,     changeUnit: 'pct' as const },
   ];
 
   return (
     <div className="wrap">
       {/* ── Cabecera ── */}
       <div className="top">
-        <div className="logo" role="img" aria-label="Padel Hangar">✈️</div>
+        <img
+          src="https://padelhangar.es/wp-content/uploads/2022/08/padle-hangar-españa-logotipo.png"
+          alt="Padel Hangar"
+          className="logo-img"
+        />
         <div>
           <div className="h1">Padel <b>Hangar</b> · Cuadro de mandos</div>
           <div className="sub">
@@ -84,6 +103,40 @@ export default function App() {
       {/* ── Barra hazard ── */}
       <div className="hazard" aria-hidden="true" />
 
+      {/* ── Filtros activos ── */}
+      {hasFilters && (
+        <div className="filter-bar" role="status" aria-live="polite">
+          <span className="filter-label">Filtrando por</span>
+
+          {selectedCourt !== null && (
+            <span className="chip">
+              Pista: {selectedCourt}
+              <button onClick={() => setSelectedCourt(null)} aria-label="Quitar filtro pista">×</button>
+            </span>
+          )}
+          {selectedCanal !== null && (
+            <span className="chip">
+              Canal: {selectedCanal}
+              <button onClick={() => setSelectedCanal(null)} aria-label="Quitar filtro canal">×</button>
+            </span>
+          )}
+          {selectedPago !== null && (
+            <span className="chip">
+              Pago: {selectedPago}
+              <button onClick={() => setSelectedPago(null)} aria-label="Quitar filtro pago">×</button>
+            </span>
+          )}
+          {selectedSlot !== null && (
+            <span className="chip">
+              Franja: {SLOT_LABELS[selectedSlot]}
+              <button onClick={() => setSelectedSlot(null)} aria-label="Quitar filtro franja">×</button>
+            </span>
+          )}
+
+          <button className="btn-clear" onClick={clearAll}>Limpiar todo</button>
+        </div>
+      )}
+
       {/* ── KPIs ── */}
       <div className="kpis">
         {kpiCards.map(k => (
@@ -91,7 +144,7 @@ export default function App() {
         ))}
       </div>
 
-      {/* ── Fila 1: Ingresos wide + Pistas + Heatmap ── */}
+      {/* ── Fila 1 ── */}
       <div className="grid">
         <ChartCard
           title="Ingresos vs costes · margen"
@@ -108,21 +161,33 @@ export default function App() {
 
         <ChartCard
           title="Rendimiento de pistas"
-          subtitle="% ocupación"
+          subtitle={selectedCourt ? `Pista seleccionada: ${selectedCourt} — haz clic para deseleccionar` : 'Haz clic en una barra para filtrar'}
           legend={[
             { color: 'var(--yellow)', label: 'Indoor' },
             { color: 'var(--blue)',   label: 'Outdoor' },
           ]}
         >
-          <CourtChart data={courts} />
+          <CourtChart
+            data={courts}
+            selected={selectedCourt}
+            onSelect={setSelectedCourt}
+          />
         </ChartCard>
 
-        <ChartCard title="Ocupación por franja" subtitle="día × hora · % uso">
-          <Heatmap data={heat} />
+        <ChartCard
+          title="Ocupación por franja"
+          subtitle={selectedSlot !== null ? `Franja ${SLOT_LABELS[selectedSlot]} seleccionada · haz clic en la etiqueta para deseleccionar` : 'Haz clic en una franja horaria para filtrar'}
+        >
+          <Heatmap
+            data={heat}
+            selectedSlot={selectedSlot}
+            onSelectSlot={setSelectedSlot}
+            courtNote={selectedCourt}
+          />
         </ChartCard>
       </div>
 
-      {/* ── Fila 2: Profesores + Tramos + Donuts + Combo ── */}
+      {/* ── Fila 2 ── */}
       <div className="grid" style={{ marginTop: 14 }}>
         <ChartCard title="Rendimiento de profesores" subtitle="ingresos · ocupación de franja">
           <ProfList data={profesores} />
@@ -136,16 +201,27 @@ export default function App() {
           <TramoList data={tramos} />
         </ChartCard>
 
-        <ChartCard title="Origen de las reservas" subtitle="canal · % del total">
-          <Donut data={canales} />
+        <ChartCard
+          title="Origen de las reservas"
+          subtitle={selectedCanal ? `Canal: ${selectedCanal} · haz clic para deseleccionar` : 'Haz clic en un canal para filtrar'}
+        >
+          <Donut
+            data={canales}
+            selected={selectedCanal}
+            onSelect={setSelectedCanal}
+          />
         </ChartCard>
 
         <ChartCard
           title="Estado de pagos y renovación"
-          subtitle="cartera de socios · %"
+          subtitle={selectedPago ? `Estado: ${selectedPago} · haz clic para deseleccionar` : 'Haz clic en un estado para filtrar'}
           note="El bot persigue automáticamente el cobro pendiente; tras el plazo de gracia libera la plaza a lista de espera."
         >
-          <Donut data={pagos} />
+          <Donut
+            data={pagos}
+            selected={selectedPago}
+            onSelect={setSelectedPago}
+          />
         </ChartCard>
 
         <ChartCard
